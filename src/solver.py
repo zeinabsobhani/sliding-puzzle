@@ -90,3 +90,11 @@ class Solver:
         print("No Solution Found! Make sure the board is solvable.")
         return ""
     
+    def solve(self, board):
+        if self.method == 'bfs':
+            solution = self.BFS(board)
+        elif self.method == 'dfs':
+            solution = self.DFS(board)
+        else:
+            raise Exception("method not recognized")
+        return solution
