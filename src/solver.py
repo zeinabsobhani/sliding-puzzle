@@ -50,34 +50,33 @@ class Solver:
         print("No Solution Found! Make sure the board is solvable.")
         return ""
 
-    def DFS(self,board: Board):
+    def DFS(self, board: Board):
         """
         Implementation of DFS approach to find a solution. Important: the solution will not be the shortest path.
         Returns:
-            solution_moves (str): string of moves to solve the puzzle. example: "ldru" meaning "left","down","right","up". 
+            solution_moves (str): string of moves to solve the puzzle. example: "ldru" meaning "left","down","right","up".
         """
         dim = board.dim
         goal = Board(dim).board_key
         stack = [board]
-        
+
         key0 = board.board_key
         seen_states_dict = defaultdict(str)
         seen_states_dict[key0] = ""
-        
+
         while stack:
-            
             hist = seen_states_dict[key0]
             oppo = ""
             if hist:
                 oppo = self.OPPOSITES[hist[-1]]
-            
+
             new_states = stack[-1].get_new_states()
-            
+
             stack.pop(-1)
-            
-            for move,state in new_states.items():
+
+            for move, state in new_states.items():
                 key = state.board_key
-                if not key in seen_states_dict and move!=oppo:
+                if not key in seen_states_dict and move != oppo:
                     stack.append(state)
                     seen_states_dict[key] = hist + move
                 if key == goal:
@@ -89,4 +88,12 @@ class Solver:
 
         print("No Solution Found! Make sure the board is solvable.")
         return ""
-    
+
+    def solve(self, board):
+        if self.method == "bfs":
+            solution = self.BFS(board)
+        elif self.method == "dfs":
+            solution = self.DFS(board)
+        else:
+            raise Exception("method not recognized")
+        return solution
