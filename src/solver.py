@@ -10,8 +10,10 @@ class Solver:
 
     def __init__(self, method="bfs", score = 'manhattan'):
         self.method = method
+        # mehthod is one of "bfs", "dfs", or "astar"
         self.solution_moves = ""
         self.score = score
+        # score is one of "manhattan", or "misplaced"
 
     def BFS(self, board: Board):
         """
