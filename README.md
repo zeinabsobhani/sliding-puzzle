@@ -1,6 +1,6 @@
 # sliding-puzzle
 
-This repo contains A^* , DFS and BFS solvers for the sliding puzzle challenge. 
+This repo contains A* , DFS and BFS solvers for the sliding puzzle challenge. 
 
 ## Prerequisites
 - numpy
