@@ -190,3 +190,12 @@ class Board:
         """
         board[i1, j1], board[i2, j2] = board[i2, j2], board[i1, j1]
         return board
+
+    def __eq__(self,other):
+        return np.all(self.board == other.board)
+
+    def __lt__(self, other):
+        return self.board[0,0]<other.board[0,0]
+    
+    def __le__(self, other):
+        return self.board[0,0]<=other.board[0,0]
