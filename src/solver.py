@@ -3,12 +3,13 @@ from collections import defaultdict
 from heapq import *
 import warnings
 
+
 class Solver:
     # The opposite of every move is stored in this dictionary.
     # This is used to rule out the repetetive moves that undo the previous move.
     OPPOSITES = {"l": "r", "r": "l", "u": "d", "d": "u"}
 
-    def __init__(self, method="bfs", score = 'manhattan'):
+    def __init__(self, method="bfs", score="manhattan"):
         self.method = method
         # mehthod is one of "bfs", "dfs", or "astar"
         self.solution_moves = ""
@@ -96,7 +97,7 @@ class Solver:
 
         print("No Solution Found! Make sure the board is solvable.")
         return ""
-    
+
     @staticmethod
     def manhattan_distance(board, goal):
         """
@@ -107,7 +108,7 @@ class Solver:
         Returns:
             (int): the distance value
         """
-        
+
         result = 0
         n = board.shape[0]
         for i in range(n):
@@ -126,41 +127,40 @@ class Solver:
         Returns:
             (int): the distance value
         """
-        
+
         result = 0
         n = board.shape[0]
         for i in range(n):
             for j in range(n):
-                if board[i][j]!=goal[i][j]:
-                    result+=1
+                if board[i][j] != goal[i][j]:
+                    result += 1
 
         return result
 
-    def hueristic_score(self, board, goal, method = 'manhattan'):
+    def hueristic_score(self, board, goal, method="manhattan"):
         """
         Wrapper function for calculating the heuristic score
         """
-        if method == 'manhattan':
+        if method == "manhattan":
             return self.manhattan_distance(board, goal)
 
-        if method == 'misplaced':
+        if method == "misplaced":
             return self.misplaced_tiles(board, goal)
-    
 
-    def AStar(self, board, score = 'manhattan'):
+    def AStar(self, board, score="manhattan"):
         """
         Implementation of AStar approach to find a solution.
         Args:
             board (Board): A board object to solve
             score (str): 'manhattan' or 'misplaced'. scoring function to use for the heuristic algorithm, Default to 'manhattan'.
         Returns:
-            solution_moves (str): string of moves to solve the puzzle. example: "ldru" meaning "left","down","right","up". 
+            solution_moves (str): string of moves to solve the puzzle. example: "ldru" meaning "left","down","right","up".
         """
         dim = board.dim
         goal = Board(dim)
         goal_key = goal.board_key
         q = []
-        score_val = self.hueristic_score(board.board,goal.board, method = score) 
+        score_val = self.hueristic_score(board.board, goal.board, method=score)
 
         # using heap improves performance. Selecting min(score) in O(1) time.
         heappush(q, (score_val, board))
@@ -181,7 +181,9 @@ class Solver:
             for move, state in new_states.items():
                 key = state.board_key
                 if not key in seen_states_dict and move != oppo:
-                    score_val = self.hueristic_score(state.board,goal.board, method = score) 
+                    score_val = self.hueristic_score(
+                        state.board, goal.board, method=score
+                    )
                     # penalty the steps taken so far (the level of the node in the tree)
                     score_val += len(hist)
 
@@ -199,13 +201,12 @@ class Solver:
         """
         Wrapper function to solve the board with a selected method.
         """
-        if self.method == 'bfs':
+        if self.method == "bfs":
             solution = self.BFS(board)
         elif self.method == "dfs":
             solution = self.DFS(board)
-        elif self.method == 'astar':
+        elif self.method == "astar":
             solution = self.AStar(board, self.score)
         else:
             raise Exception("method not recognized")
         return solution
-    
